@@ -5,42 +5,47 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.tascape.qa</groupId>
-        <artifactId>thx-ios</artifactId>
-        <version>1.1.2</version>
+        <groupId>com.tascape</groupId>
+        <artifactId>reactor-x-ios</artifactId>
+        <version>1.2.0</version>
     </parent>
-    <groupId>com.tascape.qa</groupId>
-    <artifactId>thx-ios-uiat</artifactId>
-    <version>1.1.13</version>
+    <groupId>com.tascape</groupId>
+    <artifactId>reactor-x-ios-uiat</artifactId>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
-    <name>thx-ios-uiat</name>
+    <name>reactor-x-ios-uiat</name>
     <description>uiautomation test</description>
 
     <dependencies>
         <dependency>
-            <groupId>com.tascape.qa</groupId>
-            <artifactId>testharness</artifactId>
-            <version>1.1.9</version>
+            <groupId>com.tascape</groupId>
+            <artifactId>reactor</artifactId>
+            <version>1.2.0</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.tascape.qa</groupId>
-            <artifactId>thx-ios-libimobiledevice</artifactId>
-            <version>1.1.1</version>
+            <groupId>com.tascape</groupId>
+            <artifactId>reactor-x-ios-libimobiledevice</artifactId>
+            <version>1.2.0</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.tascape.qa</groupId>
-            <artifactId>th-nailgun</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.tascape</groupId>
+            <artifactId>reactor-nailgun</artifactId>
+            <version>1.2.0</version>
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.tascape.qa</groupId>
-            <artifactId>th-lipermi</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.tascape</groupId>
+            <artifactId>reactor-lipermi</artifactId>
+            <version>1.2.0</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.tascape</groupId>
+            <artifactId>reactor-ui</artifactId>
+            <version>1.2.0</version>
         </dependency>
     </dependencies>
 </project>

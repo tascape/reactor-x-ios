@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.tascape.qa</groupId>
-    <artifactId>thx-ios</artifactId>
-    <version>1.1.2</version>  
+    <groupId>com.tascape</groupId>
+    <artifactId>reactor-x-ios</artifactId>
+    <version>1.2.0</version>  
     <packaging>pom</packaging>
 
-    <name>thx-ios</name>
-    <description>TestHarness Extension for iOS</description>
+    <name>reactor-x-ios</name>
+    <description>Reactor Extension for iOS UI Automation</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,7 +25,7 @@
         <module>uia-test</module>
     </modules>
 
-    <url>https://github.com/tascape/thx-ios</url>
+    <url>https://github.com/tascape/reactor-x-ios</url>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
@@ -41,9 +41,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:tascape/thx-ios.git</connection>
-        <developerConnection>scm:git:git@github.com:tascape/thx-ios.git</developerConnection>
-        <url>git:git@github.com:tascape/thx-ios.git</url>
+        <connection>scm:git:git@github.com:tascape/reactor-x-ios.git</connection>
+        <developerConnection>scm:git:git@github.com:tascape/reactor-x-ios.git</developerConnection>
+        <url>git:git@github.com:tascape/reactor-x-ios.git</url>
     </scm>
 
     <build>
