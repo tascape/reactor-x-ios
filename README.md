@@ -1,14 +1,13 @@
-#thx-ios
+#reactor-x-ios
 
-Testharness extension for iOS UI test automation, based on Apple UI Automation.  
+Reactor extension for iOS UI automation, based on Apple UI Automation.  
   
-The test cases are written in Java, which sends JavaScript snippet to Instruments to interact with the UI.USB connectivity is required during test execution. And a test case may interact with multiple devices.  
-http://mvnrepository.com/artifact/com.tascape.qa/thx-ios-uiat
+The cases are written in Java, which sends JavaScript snippet to Xcode Instruments to interact with the UI. USB connectivity is required during execution. And a case may interact with multiple devices.  
 
 ```
 <dependency>
-    <groupId>com.tascape.qa</groupId>
-    <artifactId>thx-ios-uiat</artifactId>
-    <version>version</version>
+    <groupId>com.tascape</groupId>
+    <artifactId>reactor-x-ios-uiat</artifactId>
+    <version>1.2.0</version>
 </dependency>
 ```
