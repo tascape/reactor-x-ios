@@ -65,7 +65,7 @@ import org.apache.commons.lang3.StringUtils;
 public class Instruments extends EntityCommunication implements JavaScriptServer, Observer {
     private static final Logger LOG = LoggerFactory.getLogger(Instruments.class);
 
-    public static final String SYSPROP_JS_TIMEOUT_SECOND = "qa.th.comm.ios.JS_TIMEOUT_SECOND";
+    public static final String SYSPROP_JS_TIMEOUT_SECOND = "reactor.comm.ios.JS_TIMEOUT_SECOND";
 
     public static final String CACHE_DIR = "/Library/Caches/com.apple.dt.instruments";
 

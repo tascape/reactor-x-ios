@@ -22,7 +22,7 @@ import com.tascape.reactor.ios.driver.App;
  *
  * @author linsong wang
  */
-public interface UiAutomationTest {
+public interface UiAutomationCase {
 
     default void testManully(App app) throws Exception {
         this.testManully(app, 30);

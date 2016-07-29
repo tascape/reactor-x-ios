@@ -58,7 +58,7 @@ class LibIMobileDevice extends EntityDriver {
 
     public static final int DEVICE_DETECTION_TIMEOUT_MS = 2000;
 
-    public static final String SYSPROP_UUIDS = "qa.th.driver.ios.UUIDS";
+    public static final String SYSPROP_UUIDS = "reactor.driver.ios.UUIDS";
 
     private static final List<String> UUIDS = new ArrayList<>();
 

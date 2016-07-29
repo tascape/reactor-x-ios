@@ -51,7 +51,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     private static final List<UiAutomationDevice> DEVICES = new ArrayList<>();
 
-    public static final String SYSPROP_TIMEOUT_SECOND = "qa.th.driver.ios.TIMEOUT_SECOND";
+    public static final String SYSPROP_TIMEOUT_SECOND = "reactor.driver.ios.TIMEOUT_SECOND";
 
     public static final String TRACE_TEMPLATE = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents"
         + "/PlugIns/AutomationInstrument.xrplugin/Contents/Resources/Automation.tracetemplate";
