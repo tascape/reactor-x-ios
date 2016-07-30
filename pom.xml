@@ -22,7 +22,7 @@
 
     <modules>
         <module>libimobiledevice</module>
-        <module>uia-test</module>
+        <module>uia-tool</module>
     </modules>
 
     <url>https://github.com/tascape/reactor-x-ios</url>

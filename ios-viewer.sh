@@ -2,4 +2,4 @@
 
 mvn clean install
 
-java -cp uia-test/target/*:uia-test/target/dependency/* com.tascape.reactor.ios.tools.UiAutomationViewer
+java -cp uia-tool/target/*:uia-tool/target/dependency/* com.tascape.reactor.ios.tools.UiAutomationViewer

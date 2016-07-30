@@ -18,17 +18,17 @@ package com.tascape.reactor.ios.task;
 import com.tascape.reactor.ios.driver.App;
 
 /**
- * This interface provides default methods to be called in test cases.
+ * This interface provides default methods to be called in cases.
  *
  * @author linsong wang
  */
 public interface UiAutomationCase {
 
-    default void testManully(App app) throws Exception {
-        this.testManully(app, 30);
+    default void runManully(App app) throws Exception {
+        this.runManully(app, 30);
     }
 
-    default void testManully(App app, int minutes) throws Exception {
+    default void runManully(App app, int minutes) throws Exception {
         app.interactManually(minutes);
     }
 }

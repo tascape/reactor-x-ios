@@ -100,7 +100,7 @@ public class UiAutomationViewer extends App {
                 jp.setLayout(new BoxLayout(jp, BoxLayout.LINE_AXIS));
                 jp.add(new JLabel("App Name"));
                 jp.add(jtfApp);
-                jtfApp.setToolTipText("name of app-under-test");
+                jtfApp.setToolTipText("name of app-under-task");
                 if (StringUtils.isNotEmpty(appName)) {
                     jtfApp.setText(appName);
                 }

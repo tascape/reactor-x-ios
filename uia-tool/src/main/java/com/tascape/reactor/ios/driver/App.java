@@ -75,7 +75,7 @@ public abstract class App extends EntityDriver {
 
     /**
      * The method starts a GUI to let an user inspect element tree and take screenshot when the user is interacting
-     * with the app-under-test manually. It is also possible to run UI Automation instruments JavaScript via this UI.
+     * with the app-under-task manually. It is also possible to run UI Automation instruments JavaScript via this UI.
      * Please make sure to set timeout long enough for manual interaction.
      *
      * @param timeoutMinutes timeout in minutes to fail the manual steps

@@ -23,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 import org.libimobiledevice.ios.driver.binding.exceptions.SDKException;
 
 /**
- * This test suite supports plug-n-play for multiple DEVICES.
+ * This suite supports plug-n-play for multiple DEVICES.
  *
  * @author linsong wang
  */
-public interface UiAutomationTestSuite {
+public interface UiAutomationSuite {
 
     BlockingQueue<UiAutomationDevice> DEVICES
         = new ArrayBlockingQueue<>(UiAutomationDevice.getAllDevices().size(), true, UiAutomationDevice.getAllDevices());

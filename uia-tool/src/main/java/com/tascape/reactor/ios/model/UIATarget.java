@@ -58,7 +58,7 @@ public interface UIATarget {
 
     /**
      * Locks screen for specified seconds, then tries to unlock. Simulating passcode entry is currently unsupported.
-     * Set the Settings - General - Passcode Lock feature to Off prior to running your tests.
+     * Set the Settings - General - Passcode Lock feature to Off prior to running your cases.
      *
      * @param duration in second
      *

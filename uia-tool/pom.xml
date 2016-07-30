@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <name>reactor-x-ios-uiat</name>
-    <description>uiautomation test</description>
+    <description>uiautomation tool</description>
 
     <dependencies>
         <dependency>
