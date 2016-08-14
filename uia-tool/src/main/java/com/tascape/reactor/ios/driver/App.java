@@ -17,6 +17,9 @@ package com.tascape.reactor.ios.driver;
 
 import com.tascape.reactor.ios.tools.UiInteraction;
 import com.tascape.reactor.driver.EntityDriver;
+import com.tascape.reactor.ios.model.FindBy;
+import com.tascape.reactor.ios.model.UIAElement;
+import java.lang.reflect.Field;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,36 @@ public abstract class App extends EntityDriver {
     public abstract int getLaunchDelayMillis();
 
     protected String version;
+
+    public <W extends AppWindow> W getWindow(Class<W> window) throws InstantiationException, IllegalAccessException {
+        W win = window.newInstance();
+        win.app = this;
+        win.device = this.getDevice();
+
+        for (Field f : window.getDeclaredFields()) {
+            FindBy fb = f.getAnnotation(FindBy.class);
+            if (fb != null) {
+                LOG.debug("process FindBy annotated field {}", f.getName());
+                f.setAccessible(true);
+
+                UIAElement ele = (UIAElement) f.getType().newInstance();
+                String jsPath = fb.jsPath();
+                if (StringUtils.isNotEmpty(jsPath)) {
+                    ele.setJsPath(jsPath);
+                }
+                String name = fb.name();
+                if (StringUtils.isNotEmpty(name)) {
+                    ele.setName(name);
+                }
+                String partialName = fb.partialName();
+                if (StringUtils.isNotEmpty(partialName)) {
+                    ele.setPartialName(partialName);
+                }
+                f.set(win, f.getType().cast(ele));
+            }
+        }
+        return win;
+    }
 
     @Override
     public String getVersion() {

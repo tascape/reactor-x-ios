@@ -16,6 +16,7 @@
 package com.tascape.reactor.ios.model;
 
 import com.tascape.reactor.ios.comm.Instruments;
+import com.tascape.reactor.ios.driver.UiAutomationDevice;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -31,11 +32,11 @@ import org.json.JSONObject;
  */
 public class UIAElement {
 
-    private int index = 0;
+    private int index = -1;
 
     private String name;
 
-    private Rectangle2D.Float rect;
+    private Rectangle2D.Float rect = new Rectangle2D.Float();
 
     private Point2D.Float center;
 
@@ -43,7 +44,13 @@ public class UIAElement {
 
     private UIAElement parent;
 
+    private String partialName;
+
+    private String jsPath;
+
     private Instruments instruments;
+
+    private UiAutomationDevice device;
 
     public int index() {
         return index;
@@ -296,23 +303,23 @@ public class UIAElement {
     }
 
     public void doubleTap() {
-        instruments.runJavaScript(toJavaScript() + ".doubleTap();");
+        instruments.runJavaScript(toJsPath() + ".doubleTap();");
     }
 
     public void scrollToVisible() {
-        instruments.runJavaScript(toJavaScript() + ".scrollToVisible();");
+        instruments.runJavaScript(toJsPath() + ".scrollToVisible();");
     }
 
     public void touchAndHold(int duration) {
-        instruments.runJavaScript(toJavaScript() + ".touchAndHold(" + duration + ");");
+        instruments.runJavaScript(toJsPath() + ".touchAndHold(" + duration + ");");
     }
 
     public void twoFingerTap() {
-        instruments.runJavaScript(toJavaScript() + ".twoFingerTap();");
+        instruments.runJavaScript(toJsPath() + ".twoFingerTap();");
     }
 
     public boolean checkIsValid() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJavaScript()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
             + "; UIALogger.logMessage(e.checkIsValid() + '');"));
         if (null != v) {
             switch (v) {
@@ -326,7 +333,7 @@ public class UIAElement {
     }
 
     public int hasKeyboardFocus() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJavaScript()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
             + "; UIALogger.logMessage(e.hasKeyboardFocus() + '');"));
         if (null != v) {
             switch (v) {
@@ -340,7 +347,7 @@ public class UIAElement {
     }
 
     public int isEnabled() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJavaScript()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
             + "; UIALogger.logMessage(e.isEnabled() + '');"));
         if (null != v) {
             switch (v) {
@@ -354,7 +361,7 @@ public class UIAElement {
     }
 
     public boolean isValid() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJavaScript()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
             + "; UIALogger.logMessage(e.isValid() + '');"));
         if (null != v) {
             switch (v) {
@@ -368,7 +375,7 @@ public class UIAElement {
     }
 
     public int isVisible() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJavaScript()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
             + "; UIALogger.logMessage(e.isVisible() + '');"));
         if (null != v) {
             switch (v) {
@@ -382,7 +389,7 @@ public class UIAElement {
     }
 
     public boolean waitForInvalid() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJavaScript()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
             + "; UIALogger.logMessage(e.waitForInvalid() + '');"));
         if (null != v) {
             switch (v) {
@@ -396,12 +403,12 @@ public class UIAElement {
     }
 
     public String label() {
-        String js = "var e = " + toJavaScript() + "; UIALogger.logMessage(e.label());";
+        String js = "var e = " + toJsPath() + "; UIALogger.logMessage(e.label());";
         return Instruments.getLogMessage(instruments.runJavaScript(js));
     }
 
     public String value() {
-        String js = "var e = " + toJavaScript() + "; UIALogger.logMessage(e.value());";
+        String js = "var e = " + toJsPath() + "; UIALogger.logMessage(e.value());";
         return Instruments.getLogMessage(instruments.runJavaScript(js));
     }
 
@@ -410,11 +417,11 @@ public class UIAElement {
     }
 
     public void tap() {
-        instruments.runJavaScript(toJavaScript() + ".tap();");
+        instruments.runJavaScript(getJsPath() + ".tap();");
     }
 
     public void tap(int times) {
-        String js = toJavaScript() + ".tap();";
+        String js = getJsPath() + ".tap();";
         instruments.runJavaScript(StringUtils.repeat(js, times));
     }
 
@@ -437,22 +444,8 @@ public class UIAElement {
             + ", " + duration + ");");
     }
 
-    public String toJavaScript() {
-        List<String> list = new ArrayList<>();
-        list.add(0, "elements()[" + index + "]");
-        UIAElement element = this.parent();
-        while (!(element instanceof UIAWindow)) {
-            list.add(0, "elements()[" + element.index() + "]");
-            element = element.parent();
-        }
-        UIAWindow window = (UIAWindow) element;
-        if (window.index() == 0) {
-            list.add(0, "window");
-        } else {
-            list.add(0, "windows()[" + window.index() + "]");
-            list.add(0, "app");
-        }
-        return StringUtils.join(list, ".");
+    public <T extends UIAElement> T as(Class<T> t) {
+        return t.cast(this);
     }
 
     public JSONObject toJson() {
@@ -494,13 +487,56 @@ public class UIAElement {
         return StringUtils.join(logElement(), "\n");
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public UIAElement setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getPartialName() {
+        return partialName;
+    }
+
+    public UIAElement setPartialName(String partialName) {
+        this.partialName = partialName;
+        return this;
+    }
+
+    public String getJsPath() {
+        if (StringUtils.isEmpty(jsPath)) {
+            if (index < 0) {
+                UIAWindow window = device.mainWindow();
+                UIAElement element;
+                if (StringUtils.isNotEmpty(name)) {
+                    element = window.findElement(this.getClass(), name);
+                } else if (StringUtils.isNotEmpty(partialName)) {
+                    element = window.findElementPartialName(this.getClass(), partialName);
+                } else {
+                    throw new UIAException("Cannot locate current element");
+                }
+                jsPath = element.toJsPath();
+            } else {
+                jsPath = this.toJsPath();
+            }
+        }
+        return jsPath;
+    }
+
+    public void setJsPath(String jsPath) {
+        this.jsPath = jsPath;
+    }
+
     Instruments getInstruments() {
         return instruments;
     }
 
-    void setInstruments(Instruments instruments) {
-        this.instruments = instruments;
-        this.elements.forEach((UIAElement e) -> e.setInstruments(instruments));
+    void setDevice(UiAutomationDevice device) {
+        this.device = device;
+        this.instruments = device.getInstruments();
+        this.elements.forEach((UIAElement e) -> e.setDevice(device));
     }
 
     <T extends UIAElement> T findElement(Class<T> type, String name) {
@@ -529,14 +565,6 @@ public class UIAElement {
         return type.cast(null);
     }
 
-    void setIndex(int index) {
-        this.index = index;
-    }
-
-    void setName(String name) {
-        this.name = name;
-    }
-
     void setRect(Rectangle2D.Float rect) {
         this.rect = rect;
         this.center = new Point2D.Float(rect.x + rect.width / 2, rect.y + rect.height / 2);
@@ -554,5 +582,25 @@ public class UIAElement {
 
     String toCGString(Point2D.Float point) {
         return String.format("{x:%f, y:%f}", point.x, point.y);
+    }
+
+    private String toJsPath() {
+        List<String> list = new ArrayList<>();
+        list.add(0, "elements()[" + index + "]");
+        UIAElement element = this.parent();
+        if (element != null) {
+            while (!(element instanceof UIAWindow)) {
+                list.add(0, "elements()[" + element.index() + "]");
+                element = element.parent();
+            }
+            UIAWindow window = (UIAWindow) element;
+            if (window.index() == 0) {
+                list.add(0, "window");
+            } else {
+                list.add(0, "windows()[" + window.index() + "]");
+                list.add(0, "app");
+            }
+        }
+        return StringUtils.join(list, ".");
     }
 }

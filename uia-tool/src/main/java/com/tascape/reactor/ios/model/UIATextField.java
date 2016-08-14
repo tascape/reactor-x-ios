@@ -22,7 +22,7 @@ package com.tascape.reactor.ios.model;
 public class UIATextField extends UIAElement {
 
     public void setValue(String value) throws UIAException {
-        String js = "var e = " + toJavaScript() + "; e.setValue('" + value + "');";
+        String js = "var e = " + getJsPath() + "; e.setValue('" + value + "');";
         getInstruments().runJavaScript(js);
     }
 }

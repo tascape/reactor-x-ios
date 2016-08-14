@@ -15,7 +15,7 @@
  */
 package com.tascape.reactor.ios.model;
 
-import com.tascape.reactor.ios.comm.Instruments;
+import com.tascape.reactor.ios.driver.UiAutomationDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +27,8 @@ public class UIAWindow extends UIAElement {
     private static final Logger LOG = LoggerFactory.getLogger(UIAWindow.class);
 
     @Override
-    public void setInstruments(Instruments instruments) {
-        super.setInstruments(instruments);
+    public void setDevice(UiAutomationDevice device) {
+        super.setDevice(device);
     }
 
     /**

@@ -22,7 +22,7 @@ package com.tascape.reactor.ios.model;
 public class UIAPickerWheel extends UIAPicker {
 
     public void selectValue(String value) throws UIAException {
-        String js = "var e = " + toJavaScript() + "; e.selectValue('" + value + "');";
+        String js = "var e = " + getJsPath() + "; e.selectValue('" + value + "');";
         getInstruments().runJavaScript(js);
     }
 }

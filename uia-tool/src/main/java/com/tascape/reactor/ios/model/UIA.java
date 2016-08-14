@@ -217,7 +217,7 @@ public class UIA {
 
             try {
                 UIAElement element = w.findElement(UIAStaticText.class, "Recipes");
-                LOG.debug("{}", element.toJavaScript());
+                LOG.debug("{}", element.getJsPath());
                 LOG.debug("{}", element.toJson().toString(2));
                 LOG.debug("{}", element.toString());
             } catch (Exception ex) {

@@ -392,7 +392,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
             LOG.warn(ex.getMessage());
         }
         UIAWindow window = UIA.newInstance().parseElementTree(index, lines);
-        window.setInstruments(instruments);
+        window.setDevice(this);
         LOG.trace("time {} ms", System.currentTimeMillis() - start);
         return window;
     }
@@ -505,7 +505,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void dragFromToForDuration(UIAElement fromElement, UIAElement toElement, int duration) {
-        this.dragFromToForDuration(fromElement.toJavaScript(), toElement.toJavaScript(), duration);
+        this.dragFromToForDuration(fromElement.getJsPath(), toElement.getJsPath(), duration);
     }
 
     @Override
@@ -521,7 +521,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void doubleTap(UIAElement element) {
-        this.doubleTap(element.toJavaScript());
+        element.doubleTap();
     }
 
     @Override
@@ -549,7 +549,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void flickFromTo(UIAElement fromElement, UIAElement toElement) {
-        this.flickFromTo(fromElement.toJavaScript(), toElement.toJavaScript());
+        this.flickFromTo(fromElement.getJsPath(), toElement.getJsPath());
     }
 
     @Override
@@ -566,7 +566,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void pinchCloseFromToForDuration(UIAElement fromElement, UIAElement toElement, int duration) {
-        this.pinchCloseFromToForDuration(fromElement.toJavaScript(), toElement.toJavaScript(), duration);
+        this.pinchCloseFromToForDuration(fromElement.getJsPath(), toElement.getJsPath(), duration);
     }
 
     @Override
@@ -583,7 +583,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void pinchOpenFromToForDuration(UIAElement fromElement, UIAElement toElement, int duration) {
-        this.pinchOpenFromToForDuration(fromElement.toJavaScript(), toElement.toJavaScript(), duration);
+        this.pinchOpenFromToForDuration(fromElement.getJsPath(), toElement.getJsPath(), duration);
     }
 
     @Override
@@ -604,7 +604,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void tap(UIAElement element) {
-        this.tap(element.toJavaScript());
+        element.tap();
     }
 
     @Override
@@ -619,7 +619,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void touchAndHold(UIAElement element, int duration) {
-        this.instruments.runJavaScript("var e = " + element.toJavaScript() + "; e.touchAndHold(e, " + duration + ");");
+        this.instruments.runJavaScript("var e = " + element.getJsPath() + "; e.touchAndHold(e, " + duration + ");");
     }
 
     @Override
@@ -689,7 +689,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 //    }
     @Override
     public UIAKeyboard keyboard() {
-        return UIAApplication.super.getKeyboard(instruments);
+        return UIAApplication.super.getKeyboard(this);
     }
 
     public UIAWindow getCurrentWindow() {
@@ -723,7 +723,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
             LOG.warn(ex.getMessage());
         }
         UIAWindow window = UIA.newInstance().parseElementTree(lines);
-        window.setInstruments(instruments);
+        window.setDevice(this);
         this.currentWindow = window;
         LOG.trace("time {} ms", System.currentTimeMillis() - start);
         return window;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 - 2016 Nebula Bay.
+ * Copyright 2016 Nebula Bay.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tascape.reactor.ios.model;
+package com.tascape.reactor.ios.driver;
 
-import com.tascape.reactor.ios.driver.UiAutomationDevice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author linsong wang
+ * @param <A> subclass of App
  */
-public interface UIAApplication {
+public class AppWindow<A extends App> {
+    private static final Logger LOG = LoggerFactory.getLogger(AppWindow.class);
 
-    UIAWindow mainWindow() throws UIAException;
+    protected A app;
 
-    UIAWindow windows(int index) throws UIAException;
+    protected UiAutomationDevice device;
 
-//    String bundleID() throws UIAException;
-    UIAKeyboard keyboard() throws UIAException;
-
-//    String version() throws UIAException;
-    default UIAKeyboard getKeyboard(UiAutomationDevice device) throws UIAException {
-        UIAKeyboard kb = new UIAKeyboard();
-        kb.setDevice(device);
-        return kb;
+    public AppWindow of(A app) {
+        this.app = app;
+        this.device = app.getDevice();
+        return this.getClass().cast(this);
     }
 }
