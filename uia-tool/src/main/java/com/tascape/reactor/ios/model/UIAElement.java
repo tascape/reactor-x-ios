@@ -47,6 +47,8 @@ public class UIAElement {
     private String partialName;
 
     private String jsPath;
+    
+    private boolean cacheLookup = false;
 
     private Instruments instruments;
 
@@ -506,6 +508,9 @@ public class UIAElement {
     }
 
     public String getJsPath() {
+        if (!cacheLookup) {
+            this.jsPath = "";
+        }
         if (StringUtils.isEmpty(jsPath)) {
             if (index < 0) {
                 UIAWindow window = device.mainWindow();
@@ -527,6 +532,10 @@ public class UIAElement {
 
     public void setJsPath(String jsPath) {
         this.jsPath = jsPath;
+    }
+    
+    public void setCacheLookup(boolean enabled) {
+        this.cacheLookup = enabled;
     }
 
     Instruments getInstruments() {

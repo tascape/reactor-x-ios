@@ -17,6 +17,7 @@ package com.tascape.reactor.ios.driver;
 
 import com.tascape.reactor.ios.tools.UiInteraction;
 import com.tascape.reactor.driver.EntityDriver;
+import com.tascape.reactor.ios.model.CacheLookup;
 import com.tascape.reactor.ios.model.FindBy;
 import com.tascape.reactor.ios.model.UIAElement;
 import java.lang.reflect.Field;
@@ -65,6 +66,9 @@ public abstract class App extends EntityDriver {
                     ele.setPartialName(partialName);
                 }
                 f.set(win, f.getType().cast(ele));
+
+                LOG.debug("process CacheLookup annotation");
+                ele.setCacheLookup(f.getAnnotation(CacheLookup.class) != null);
             }
         }
         return win;
