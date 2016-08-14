@@ -22,15 +22,33 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author linaong wang
+ * @author linsong wang
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.FIELD, ElementType.TYPE})
 public @interface FindBy {
 
+    /**
+     * Returns path for locating the element (UIAElement or one of its child types). Example:
+     * {@code window.elements()[1].buttons()[1]}, where {@code window} is pre-defined JavaScript object of iOS app
+     * main window.
+     *
+     * @return Apple UIAutomation JavaScript path of an element on main window element tree
+     */
     public String jsPath() default "";
 
+    /**
+     * Returns name for locating the element (UIAElement or one of its child types).
+     *
+     * @return name of the element
+     */
     public String name() default "";
 
+    /**
+     * Returns partial name for locating the element (UIAElement or one of its child types).
+     * {@link String#contains(CharSequence)} and {@link String#matches(String)} are tried in that order.
+     *
+     * @return partial name of the element, Java regular expression is supported
+     */
     public String partialName() default "";
 }

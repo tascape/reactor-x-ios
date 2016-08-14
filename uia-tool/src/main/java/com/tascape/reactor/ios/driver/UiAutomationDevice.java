@@ -105,7 +105,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
     }
 
     /**
-     * Launches app by name, and verifies the main widown is on screen.
+     * Launches app by name, and verifies the main window is on screen.
      *
      * @param appName     app name
      * @param tries       number of tries of instruments command

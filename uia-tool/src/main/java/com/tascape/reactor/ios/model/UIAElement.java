@@ -553,11 +553,11 @@ public class UIAElement {
     }
 
     <T extends UIAElement> T findElementPartialName(Class<T> type, String partialName) {
-        if (type.equals(this.getClass()) && this.name().contains(partialName)) {
+        if (type.equals(this.getClass()) && (this.name().contains(partialName)) || this.name.matches(partialName)) {
             return type.cast(this);
         }
         for (UIAElement element : elements) {
-            UIAElement e = element.findElement(type, partialName);
+            UIAElement e = element.findElementPartialName(type, partialName);
             if (e != null) {
                 return type.cast(e);
             }
