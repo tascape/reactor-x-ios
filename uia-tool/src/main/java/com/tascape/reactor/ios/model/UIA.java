@@ -114,6 +114,7 @@ public class UIA {
 
             } else if (!childLines.isEmpty()) {
                 childLines.add(line);
+
             } else if (StringUtils.isNotEmpty(uiaLine)) {
                 uiaLine += "\n" + line;
             }
