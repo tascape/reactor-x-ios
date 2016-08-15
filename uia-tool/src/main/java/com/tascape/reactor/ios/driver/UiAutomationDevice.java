@@ -604,7 +604,7 @@ public class UiAutomationDevice extends LibIMobileDevice implements UIATarget, U
 
     @Override
     public void tap(UIAElement element) {
-        element.tap();
+        this.tap(element.getJsPath());
     }
 
     @Override

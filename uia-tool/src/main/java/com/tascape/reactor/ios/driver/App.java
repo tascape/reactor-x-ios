@@ -52,7 +52,13 @@ public abstract class App extends EntityDriver {
                 LOG.debug("process FindBy annotated field {}", f.getName());
                 f.setAccessible(true);
 
+                if (!UIAElement.class.isAssignableFrom(f.getType())) {
+                    LOG.warn("{} annotation only works with {}, and its child classes", FindBy.class.getName(),
+                        UIAElement.class.getName());
+                    continue;
+                }
                 UIAElement ele = (UIAElement) f.getType().newInstance();
+                ele.setIsFindby(true);
                 String jsPath = fb.jsPath();
                 if (StringUtils.isNotEmpty(jsPath)) {
                     ele.setJsPath(jsPath);
@@ -68,7 +74,7 @@ public abstract class App extends EntityDriver {
                 f.set(win, f.getType().cast(ele));
 
                 LOG.debug("process CacheLookup annotation");
-                ele.setCacheLookup(f.getAnnotation(CacheLookup.class) != null);
+                ele.setIsCacheLookup(f.getAnnotation(CacheLookup.class) != null);
             }
         }
         return win;

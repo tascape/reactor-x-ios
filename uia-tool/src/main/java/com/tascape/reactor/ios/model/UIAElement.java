@@ -47,8 +47,10 @@ public class UIAElement {
     private String partialName;
 
     private String jsPath;
-    
-    private boolean cacheLookup = false;
+
+    private boolean isFindby = false;
+
+    private boolean isCacheLookup = false;
 
     private Instruments instruments;
 
@@ -305,23 +307,23 @@ public class UIAElement {
     }
 
     public void doubleTap() {
-        instruments.runJavaScript(toJsPath() + ".doubleTap();");
+        instruments.runJavaScript(getJsPath() + ".doubleTap();");
     }
 
     public void scrollToVisible() {
-        instruments.runJavaScript(toJsPath() + ".scrollToVisible();");
+        instruments.runJavaScript(getJsPath() + ".scrollToVisible();");
     }
 
     public void touchAndHold(int duration) {
-        instruments.runJavaScript(toJsPath() + ".touchAndHold(" + duration + ");");
+        instruments.runJavaScript(getJsPath() + ".touchAndHold(" + duration + ");");
     }
 
     public void twoFingerTap() {
-        instruments.runJavaScript(toJsPath() + ".twoFingerTap();");
+        instruments.runJavaScript(getJsPath() + ".twoFingerTap();");
     }
 
     public boolean checkIsValid() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + getJsPath()
             + "; UIALogger.logMessage(e.checkIsValid() + '');"));
         if (null != v) {
             switch (v) {
@@ -335,7 +337,7 @@ public class UIAElement {
     }
 
     public int hasKeyboardFocus() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + getJsPath()
             + "; UIALogger.logMessage(e.hasKeyboardFocus() + '');"));
         if (null != v) {
             switch (v) {
@@ -349,7 +351,7 @@ public class UIAElement {
     }
 
     public int isEnabled() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + getJsPath()
             + "; UIALogger.logMessage(e.isEnabled() + '');"));
         if (null != v) {
             switch (v) {
@@ -363,7 +365,7 @@ public class UIAElement {
     }
 
     public boolean isValid() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + getJsPath()
             + "; UIALogger.logMessage(e.isValid() + '');"));
         if (null != v) {
             switch (v) {
@@ -391,7 +393,7 @@ public class UIAElement {
     }
 
     public boolean waitForInvalid() {
-        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + toJsPath()
+        String v = Instruments.getLogMessage(instruments.runJavaScript("var e = " + getJsPath()
             + "; UIALogger.logMessage(e.waitForInvalid() + '');"));
         if (null != v) {
             switch (v) {
@@ -405,12 +407,12 @@ public class UIAElement {
     }
 
     public String label() {
-        String js = "var e = " + toJsPath() + "; UIALogger.logMessage(e.label());";
+        String js = "var e = " + getJsPath() + "; UIALogger.logMessage(e.label());";
         return Instruments.getLogMessage(instruments.runJavaScript(js));
     }
 
     public String value() {
-        String js = "var e = " + toJsPath() + "; UIALogger.logMessage(e.value());";
+        String js = "var e = " + getJsPath() + "; UIALogger.logMessage(e.value());";
         return Instruments.getLogMessage(instruments.runJavaScript(js));
     }
 
@@ -508,34 +510,56 @@ public class UIAElement {
     }
 
     public String getJsPath() {
-        if (!cacheLookup) {
-            this.jsPath = "";
+        if (!isFindby) {
+            return this.toJsPath();
         }
-        if (StringUtils.isEmpty(jsPath)) {
-            if (index < 0) {
-                UIAWindow window = device.mainWindow();
-                UIAElement element;
-                if (StringUtils.isNotEmpty(name)) {
-                    element = window.findElement(this.getClass(), name);
-                } else if (StringUtils.isNotEmpty(partialName)) {
-                    element = window.findElementPartialName(this.getClass(), partialName);
-                } else {
-                    throw new UIAException("Cannot locate current element");
-                }
-                jsPath = element.toJsPath();
+        if (StringUtils.isNotEmpty(jsPath) && isCacheLookup) {
+            return jsPath;
+        }
+        UIAWindow window = device.mainWindow();
+        UIAElement element = null;
+        if (StringUtils.isNotEmpty(name)) {
+            element = window.findElement(this.getClass(), name);
+        } else if (StringUtils.isNotEmpty(partialName)) {
+            element = window.findElementPartialName(this.getClass(), partialName);
+        }
+        if (element == null) {
+            throw new UIAException("Cannot locate current element");
+        }
+        jsPath = element.toJsPath();
+        return jsPath;
+    }
+
+    public String toJsPath() {
+        List<String> list = new ArrayList<>();
+        list.add(0, "elements()[" + index + "]");
+        UIAElement element = this.parent();
+        if (element != null) {
+            while (!(element instanceof UIAWindow)) {
+                list.add(0, "elements()[" + element.index() + "]");
+                element = element.parent();
+            }
+            UIAWindow window = (UIAWindow) element;
+            if (window.index() == 0) {
+                list.add(0, "window");
             } else {
-                jsPath = this.toJsPath();
+                list.add(0, "windows()[" + window.index() + "]");
+                list.add(0, "app");
             }
         }
-        return jsPath;
+        return StringUtils.join(list, ".");
     }
 
     public void setJsPath(String jsPath) {
         this.jsPath = jsPath;
     }
-    
-    public void setCacheLookup(boolean enabled) {
-        this.cacheLookup = enabled;
+
+    public void setIsCacheLookup(boolean enabled) {
+        this.isCacheLookup = enabled;
+    }
+
+    public void setIsFindby(boolean enabled) {
+        this.isFindby = enabled;
     }
 
     Instruments getInstruments() {
@@ -591,25 +615,5 @@ public class UIAElement {
 
     String toCGString(Point2D.Float point) {
         return String.format("{x:%f, y:%f}", point.x, point.y);
-    }
-
-    private String toJsPath() {
-        List<String> list = new ArrayList<>();
-        list.add(0, "elements()[" + index + "]");
-        UIAElement element = this.parent();
-        if (element != null) {
-            while (!(element instanceof UIAWindow)) {
-                list.add(0, "elements()[" + element.index() + "]");
-                element = element.parent();
-            }
-            UIAWindow window = (UIAWindow) element;
-            if (window.index() == 0) {
-                list.add(0, "window");
-            } else {
-                list.add(0, "windows()[" + window.index() + "]");
-                list.add(0, "app");
-            }
-        }
-        return StringUtils.join(list, ".");
     }
 }
