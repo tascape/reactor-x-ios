@@ -320,6 +320,7 @@ public class UiInteraction {
         jd.pack();
         jd.setVisible(true);
         jd.setLocationRelativeTo(null);
+        jd.setAlwaysOnTop(true);
 
         jbLogUi.doClick();
     }

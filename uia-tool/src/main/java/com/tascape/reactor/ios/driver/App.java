@@ -49,7 +49,7 @@ public abstract class App extends EntityDriver {
         for (Field f : window.getDeclaredFields()) {
             FindBy fb = f.getAnnotation(FindBy.class);
             if (fb != null) {
-                LOG.debug("process FindBy annotated field {}", f.getName());
+                LOG.trace("process FindBy annotated field {}", f.getName());
                 f.setAccessible(true);
 
                 if (!UIAElement.class.isAssignableFrom(f.getType())) {
@@ -73,7 +73,7 @@ public abstract class App extends EntityDriver {
                 }
                 f.set(win, f.getType().cast(ele));
 
-                LOG.debug("process CacheLookup annotation");
+                LOG.trace("process CacheLookup annotation");
                 ele.setIsCacheLookup(f.getAnnotation(CacheLookup.class) != null);
             }
         }
@@ -129,4 +129,11 @@ public abstract class App extends EntityDriver {
         UiInteraction ui = new UiInteraction(device);
         ui.start(timeoutMinutes);
     }
+    
+    @Override
+     public  void reset() throws Exception {
+         if (device!=null) {
+             device.reset();
+         }
+     }
 }

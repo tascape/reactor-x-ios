@@ -140,6 +140,7 @@ public class Instruments extends EntityCommunication implements JavaScriptServer
 
     @Override
     public void disconnect() {
+        javaScriptQueue.clear();
         responseQueue.clear();
         if (instrumentsDog != null) {
             LOG.trace("Stop instruments on {}", uuid);
