@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author linsong wang
  */
-class LibIMobileDevice extends EntityDriver {
+public class LibIMobileDevice extends EntityDriver {
     private static final Logger LOG = LoggerFactory.getLogger(LibIMobileDevice.class);
 
     public static final int DEVICE_DETECTION_TIMEOUT_MS = 2000;
