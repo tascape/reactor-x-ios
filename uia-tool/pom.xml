@@ -7,11 +7,10 @@
     <parent>
         <groupId>com.tascape</groupId>
         <artifactId>reactor-x-ios</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </parent>
     <groupId>com.tascape</groupId>
     <artifactId>reactor-x-ios-uiat</artifactId>
-    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>reactor-x-ios-uiat</name>
